@@ -1,28 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 package errepasoa.a1laburpenprograma;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- *
- * @author Achraf Allach Chahboun & Hegoi Urrutia Castano
- */
 public class Metodoak {
 
+    // metodoak static izan behar dira main-etik deitu ahal izateko
     static Scanner sc = new Scanner(System.in);
+    static ArrayList<String> Izenak = new ArrayList<>();
+    static int adina;
+    static String pasahitza;
 
-    public static boolean Erregistratu(String izena, String pasahitza, Boolean Logeatuta) {
-
+    // Erregistratzeko metodoa
+    public static boolean Erregistratu() {
+        String izena;
         int zenbakiKop;
+        boolean Logeatuta = false;
 
-        ArrayList<String> Izenak = new ArrayList<>();
-        
         do {
             System.out.println("Sortu izen bat");
             izena = sc.next();
+
+            System.out.println("Zein da zure adina?");
+            adina = sc.nextInt();
 
             char[] letrak = izena.toCharArray();
             char azkena = izena.charAt(izena.length() - 1);
@@ -32,41 +32,49 @@ public class Metodoak {
             System.out.println("Zure izenaren letra kopurua: " + letrak.length);
 
             System.out.println("Zure izena letraz letra: ");
-            for (int i = 0; i < letrak.length; i++) {
-                System.out.println(letrak[i]);
+            for (char letra : letrak) {
+                System.out.println(letra);
             }
 
-            System.out.println();
-
-            Izenak.add(izena);
+            Izenak.add(izena); // izena gorde
 
             System.out.println("Sortu pasahitza bat (Minimo 6 karaktere eta 3 zenbaki):");
             pasahitza = sc.next();
 
-            // Zenbat zenbaki dauden pasahitzan zenbatzeko
+            // Zenbaki kopurua pasahitzean
             zenbakiKop = 0;
             for (int i = 0; i < pasahitza.length(); i++) {
                 char c = pasahitza.charAt(i);
-                zenbakiKop += (c >= '0' && c <= '9') ? 1 : 0;
+                if (Character.isDigit(c)) {
+                    zenbakiKop++;
+                }
             }
 
-        } while (pasahitza.length() < 6 || zenbakiKop < 3);
+        } while (pasahitza.length() < 6 || zenbakiKop < 3); // pasahitzaren baldintzak egin
 
-        System.out.println("Pasahitza egokia da:");
-
+        System.out.println("Pasahitza egokia da.");
         Logeatuta = true;
 
-        if (Logeatuta == true) {
-            System.out.println("Kontu sortu da, saioa hasten.");
-            return true;
-        }
-        else if (Logeatuta == false) {
-            System.out.println("Errorea logeatzerakoan, saioa ez dago hasita.");
-            return false;
+        if (Logeatuta) {
+            System.out.println("Kontua sortu da, saioa hasten.");
+            return true; // saioa hasi da
         } else {
-            System.out.println("Errore ezezaguna");
+            System.out.println("Errorea logeatzerakoan, saioa ez dago hasita.");
+            return false; // saioa ez dago hasita
         }
-        
-        return true;
+    }
+
+    // saioa hasitakoan zure profila ikusteko metodoa
+    public static void ProfilaIkusi() {
+        System.out.println("Zure izena: " + String.join(" ", Izenak)); // ArrayList bat string bihurtu
+        System.out.println("Zure adina: " + adina);
+        System.out.println("Zure pasahitza: " + pasahitza);
+    }
+
+    public static void SaioaItxi() {
+        Izenak.clear(); // arraylista garbitu
+        pasahitza = null;
+        adina = 0;
+        System.out.println("Saioa itxi da.");
     }
 }

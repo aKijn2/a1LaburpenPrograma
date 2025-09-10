@@ -1,7 +1,5 @@
 package errepasoa.a1laburpenprograma;
 
-import static errepasoa.a1laburpenprograma.Metodoak.Erregistratu;
-
 import java.util.Scanner;
 
 public class Main {
@@ -10,8 +8,8 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         int aukera;
-        int aukeraLogeatuta = 0;
-        
+        int aukera2;
+
         do {
             // Menua
             System.out.println("\n---------------------------------");
@@ -27,37 +25,53 @@ public class Main {
             aukera = sc.nextInt();
             sc.nextLine();
 
-            switch (aukera) {
+            switch (aukera) 
+            {
                 case 1:
                     System.out.println("\n--- Erregistroa ---");
-                    Metodoak.Erregistratu();
-                    break;
+                    boolean emaitza = Metodoak.Erregistratu(); // ← devuelve boolean
+                    if (emaitza) {
+                        System.out.println("Erregistro arrakastatsua!");
+
+                        do {
+                            // Menua
+                            System.out.println("\n---------------------------------");
+                            System.out.println("Aukeratu zer egin nahi duzu:");
+                            System.out.println("1. Profila Ikusi");
+                            System.out.println("0. Irten");
+                            System.out.print("Aukera: ");
+
+                            while (!sc.hasNextInt()) {
+                                System.out.print("Zenbaki bat sartu mesedez: ");
+                                sc.next();
+                            }
+                            aukera2 = sc.nextInt();
+                            sc.nextLine();
+
+                            switch (aukera2) {
+                                case 1:
+                                    System.out.println("\n--- Profila Ikusi ---");
+                                    Metodoak.ProfilaIkusi();
+                                    break;
+                                case 0:
+                                    Metodoak.SaioaItxi(); // arraylista garb itu errorerik ez egoteko
+                                    break;
+                                default:
+                                    System.out.println("Aukera okerra. Saiatu berriro.");
+                                    break;
+                            }
+                        } while (aukera2 != 0);
+
+                    } else {
+                        System.out.println("Erregistroa huts egin du.");
+                    }
                 case 0:
                     System.out.println("Agur!");
                     break;
-
                 default:
                     System.out.println("Aukera okerra. Saiatu berriro.");
                     break;
             }
-
-            if (Erregistratu(null)) {
-                          switch (aukeraLogeatuta) {
-                case 1:
-                    System.out.println("\n--- Erregistroa ---");
-                    Metodoak.Erregistratu();
-                    break;
-                case 0:
-                    System.out.println("Agur!");
-                    break;
-
-                default:
-                    System.out.println("Aukera okerra. Saiatu berriro.");
-                    break;
-            }  
-            }
-
-
         } while (aukera != 0);
 
         sc.close();
