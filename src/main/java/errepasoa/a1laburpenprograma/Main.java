@@ -1,79 +1,104 @@
 package errepasoa.a1laburpenprograma;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Main {
+public class Main 
+{
 
-    public static void main(String[] args) {
+    static Scanner teklatua = new Scanner(System.in);
 
-        Scanner sc = new Scanner(System.in);
-        int aukera;
-        int aukera2;
+    // Sesio egoera
+    static boolean logeatuta = false;
 
-        do {
-            // Menua
-            System.out.println("\n---------------------------------");
-            System.out.println("Aukeratu zer egin nahi duzu:");
-            System.out.println("1. Erregistratu");
-            System.out.println("0. Irten");
-            System.out.print("Aukera: ");
+    public static void main(String[] args) 
+    {
 
-            while (!sc.hasNextInt()) {
-                System.out.print("Zenbaki bat sartu mesedez: ");
-                sc.next();
-            }
-            aukera = sc.nextInt();
-            sc.nextLine();
+        // Metodoak klaseko instantzia
+        Metodoak laguntzailea = new Metodoak();
 
-            switch (aukera) 
+        boolean exekutatzen = true;
+
+        while (exekutatzen) 
+        {
+            System.out.println("\n============================");
+            if (!logeatuta) 
             {
-                case 1:
-                    System.out.println("\n--- Erregistroa ---");
-                    boolean emaitza = Metodoak.Erregistratu(); // ← devuelve boolean
-                    if (emaitza) {
-                        System.out.println("Erregistro arrakastatsua!");
 
-                        do {
-                            // Menua
-                            System.out.println("\n---------------------------------");
-                            System.out.println("Aukeratu zer egin nahi duzu:");
-                            System.out.println("1. Profila Ikusi");
-                            System.out.println("0. Irten");
-                            System.out.print("Aukera: ");
+                // Erregistratu, saioa hasi edo irten aukera ematen du
+                System.out.println("      MENUA (Saio gabe)");
+                System.out.println("============================");
+                System.out.println(" 1. Erregistratu");
+                System.out.println(" 2. Saioa hasi");
+                System.out.println(" 3. Irten");
+                System.out.println("============================");
+                System.out.print(" Aukeratu aukera bat: ");
 
-                            while (!sc.hasNextInt()) {
-                                System.out.print("Zenbaki bat sartu mesedez: ");
-                                sc.next();
-                            }
-                            aukera2 = sc.nextInt();
-                            sc.nextLine();
+                // Irakurtzen ditugu aukera zenbakiak eta haien arabera egiten dugu ekintza
+                int aukera = irakurriZenbaki();
+                switch (aukera) 
+                {
+                    case 1 -> Metodoak.Erregistratu(); // statiko metodoa, erregistroa sortu
+                    case 2 -> logeatuta = Metodoak.SaioaHasi(); // saioa hasi
+                    case 3 -> exekutatzen = false; // programaren itxi
+                    default -> System.out.println(" Aukera ez da zuzena.");
+                }
+            } else 
+            {
 
-                            switch (aukera2) {
-                                case 1:
-                                    System.out.println("\n--- Profila Ikusi ---");
-                                    Metodoak.ProfilaIkusi();
-                                    break;
-                                case 0:
-                                    Metodoak.SaioaItxi(); // arraylista garb itu errorerik ez egoteko
-                                    break;
-                                default:
-                                    System.out.println("Aukera okerra. Saiatu berriro.");
-                                    break;
-                            }
-                        } while (aukera2 != 0);
+                // Menu honetan metodo eta adibide desberdinak probatu ditzakegu
+                System.out.println("      MENUA (Saioan)");
+                System.out.println("============================");
+                System.out.println(" 1. Kontua ikusi");
+                System.out.println(" 2. Ikasleen notak ikusi");
+                System.out.println(" 3. Ikasleen nota taula ikusi");
+                System.out.println(" 4. Salbuespena probatu");
+                System.out.println(" 0. Saioa itxi");
+                System.out.println("============================");
+                System.out.print(" Aukeratu aukera bat: ");
 
-                    } else {
-                        System.out.println("Erregistroa huts egin du.");
+                // Aukera zenbakien irakurketa eta exekuzioa
+                int aukera = irakurriZenbaki();
+                switch (aukera) 
+                {
+                    case 1 -> Metodoak.KontuaIkusi();
+                    case 2 -> laguntzailea.arrayUnidimentsionala();
+                    case 3 -> laguntzailea.arrayBidimentsionala();
+                    case 4 -> 
+                    {
+                        // Salbuespena kanpora bideratzea erakusten du: hemen jasotzen dugu
+                        try 
+                        {
+                            laguntzailea.salbuProbatu();
+                        } catch (Exception e) 
+                        {
+                            System.out.println(" Kanpora bideratutako salbuespena: " + e.getMessage());
+                        }
                     }
-                case 0:
-                    System.out.println("Agur!");
-                    break;
-                default:
-                    System.out.println("Aukera okerra. Saiatu berriro.");
-                    break;
+                    case 0 -> 
+                    {
+                        // Saioa itxi eta egoera eguneratu
+                        Metodoak.SaioaItxi();
+                        logeatuta = false;
+                    }
+                    default -> System.out.println(" Aukera ez da zuzena.");
+                }
             }
-        } while (aukera != 0);
+        }
+        System.out.println("\nPrograma bukatu da. Eskerrik asko erabiltzeagatik!");
+    }
 
-        sc.close();
+    private static int irakurriZenbaki() 
+    {
+        // Laguntzaile metodoa zenbakia modu seguruan irakurtzeko aukera oker gisa
+        // identifika dezake
+        try 
+        {
+            return teklatua.nextInt();
+        } catch (InputMismatchException e) 
+        {
+            teklatua.next();
+            return -1;
+        }
     }
 }

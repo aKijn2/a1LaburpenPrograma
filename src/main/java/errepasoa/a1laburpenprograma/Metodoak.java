@@ -3,78 +3,153 @@ package errepasoa.a1laburpenprograma;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Metodoak {
+public class Metodoak 
+{
 
-    // metodoak static izan behar dira main-etik deitu ahal izateko
     static Scanner sc = new Scanner(System.in);
+
+    // Erabiltzaile erregistroa (izenak, adina, pasahitza)
     static ArrayList<String> Izenak = new ArrayList<>();
     static int adina;
     static String pasahitza;
 
-    // Erregistratzeko metodoa
-    public static boolean Erregistratu() {
-        String izena;
+    /**
+     * Zenbaki bat irakurtzen du, balio zuzena izan arte
+     */
+    public static void Erregistratu() 
+    {
+        System.out.println("\n--- ERREGISTROA ---");
+        System.out.print(" Sortu izen bat: ");
+        String izena = sc.next();
+        System.out.print(" Zein da zure adina? ");
+        adina = sc.nextInt();
+        Izenak.add(izena);
+
+        String p;
         int zenbakiKop;
-        boolean Logeatuta = false;
-
-        do {
-            System.out.println("Sortu izen bat");
-            izena = sc.next();
-
-            System.out.println("Zein da zure adina?");
-            adina = sc.nextInt();
-
-            char[] letrak = izena.toCharArray();
-            char azkena = izena.charAt(izena.length() - 1);
-
-            System.out.println("Zure izenaren lehen letra: " + letrak[0]);
-            System.out.println("Zure izenaren azken letra: " + azkena);
-            System.out.println("Zure izenaren letra kopurua: " + letrak.length);
-
-            System.out.println("Zure izena letraz letra: ");
-            for (char letra : letrak) {
-                System.out.println(letra);
-            }
-
-            Izenak.add(izena); // izena gorde
-
-            System.out.println("Sortu pasahitza bat (Minimo 6 karaktere eta 3 zenbaki):");
-            pasahitza = sc.next();
-
-            // Zenbaki kopurua pasahitzean
+        do 
+        {
+            System.out.print(" Sortu pasahitza (6 karaktere eta 3 zenbaki gutxienez): ");
+            p = sc.next();
             zenbakiKop = 0;
-            for (int i = 0; i < pasahitza.length(); i++) {
-                char c = pasahitza.charAt(i);
-                if (Character.isDigit(c)) {
+            for (char c : p.toCharArray()) 
+            {
+                if (Character.isDigit(c))
                     zenbakiKop++;
-                }
             }
+            if (p.length() < 6 || zenbakiKop < 3) 
+            {
+                System.out.println(" Pasahitzak ez du baldintzak betetzen!");
+            }
+        } while (p.length() < 6 || zenbakiKop < 3);
+        pasahitza = p;
+        System.out.println(" Kontua sortu da!");
+    }
 
-        } while (pasahitza.length() < 6 || zenbakiKop < 3); // pasahitzaren baldintzak egin
-
-        System.out.println("Pasahitza egokia da.");
-        Logeatuta = true;
-
-        if (Logeatuta) {
-            System.out.println("Kontua sortu da, saioa hasten.");
-            return true; // saioa hasi da
-        } else {
-            System.out.println("Errorea logeatzerakoan, saioa ez dago hasita.");
-            return false; // saioa ez dago hasita
+    /**
+     * Saioa hasi, izena eta pasahitza egiaztatuz
+     * 
+     * @return true balio itzultzen du saioa ongi hasi bada
+     */
+    public static boolean SaioaHasi() 
+    {
+        System.out.println("\n--- SAIOA HASI ---");
+        if (Izenak.isEmpty()) 
+        {
+            System.out.println(" Ez dago erabiltzaile erregistraturik.");
+            return false;
+        }
+        System.out.print(" Sartu zure izena: ");
+        String izena = sc.next();
+        System.out.print(" Sartu pasahitza: ");
+        String pass = sc.next();
+        if (Izenak.contains(izena) && pass.equals(pasahitza)) 
+        {
+            System.out.println(" Ongi etorri, " + izena + "!");
+            return true;
+        } else 
+        {
+            System.out.println(" Izena edo pasahitza okerra.");
+            return false;
         }
     }
 
-    // saioa hasitakoan zure profila ikusteko metodoa
-    public static void ProfilaIkusi() {
-        System.out.println("Zure izena: " + String.join(" ", Izenak)); // ArrayList bat string bihurtu
-        System.out.println("Zure adina: " + adina);
-        System.out.println("Zure pasahitza: " + pasahitza);
+    /**
+     * Erabiltzailearen kontua ikusi
+     */
+    public static void KontuaIkusi() 
+    {
+        System.out.println("\n--- KONTUA ---");
+        System.out.println(" Izenak: " + String.join(", ", Izenak));
+        System.out.println(" Adina: " + adina);
+        System.out.println(" Pasahitza: " + pasahitza);
     }
 
-    public static void SaioaItxi() {
-        Izenak.clear(); // arraylista garbitu
-        pasahitza = null;
-        adina = 0;
-        System.out.println("Saioa itxi da.");
+    /**
+     * Saioa itxi
+     */
+    public static void SaioaItxi() 
+    {
+        System.out.println("\n Saioa itxi da.");
+    }
+
+    /**
+     * Array unidimentsionala sortzen du
+     */
+    public void arrayUnidimentsionala() 
+    {
+        System.out.println("\n--- IKASLEEN NOTAK (ARRAY UNIDIMENTSIONALA) ---");
+        int[] notak = 
+        { 7, 8, 5, 9, 6 };
+        String[] ikasleak = 
+        { "Ane", "Jon", "Mikel", "Irati", "Leire" };
+        for (int i = 0; i < notak.length; i++) 
+        {
+            System.out.println(ikasleak[i] + ": " + notak[i]);
+        }
+    }
+
+    /**
+     * Array bidimentsionala sortzen du
+     */
+    public void arrayBidimentsionala() 
+    {
+        System.out.println("\n--- IKASLEEN NOTA TAULA (ARRAY BIDIMENTSIONALA) ---");
+        String[] ikasleak = 
+        { "Ane", "Jon", "Mikel" };
+        int[][] notak = 
+        {
+                
+            { 7, 8, 9 }, // Ane-ren notak
+                
+                { 6, 5, 7 }, // Jon-en notak
+                
+                { 8, 9, 10 } // Mikel-en notak
+        };
+        System.out.println("\tMatematika\tEuskara\tGaztelania");
+        for (int i = 0; i < ikasleak.length; i++) 
+        {
+            System.out.print(ikasleak[i] + "\t");
+            for (int j = 0; j < notak[i].length; j++) 
+            {
+                System.out.print(notak[i][j] + "\t\t");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Salbuespena probatu
+     * 
+     * @throws Exception
+     */
+    public void salbuProbatu() throws Exception 
+    {
+        System.out.println("\n--- SALBUESPEN PROBA ---");
+        System.out.print(" Zenbaki bat sartu (0 sartzen baduzu, errorea gertatuko da): ");
+        int zenb = sc.nextInt();
+        if (zenb == 0)
+            throw new Exception("Zero ez da baliozkoa!");
+        System.out.println(" Zenbakia zuzena da: " + zenb);
     }
 }
